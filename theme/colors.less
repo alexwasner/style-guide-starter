@@ -1,0 +1,24 @@
+/*
+Colors
+
+Markup: <div class="{{modifier_class}}">text</div>
+
+.color-white - Text Color White
+.background-white - color
+ 
+Styleguide 3
+*/
+
+
+
+//APP COLORS
+@white: #fff;
+@black: #000;
+
+.color-white { 
+  color: @white;
+  &:link, &:visited, &:active {
+    color: @white;
+  }
+}
+.background-white { background-color: @white; }

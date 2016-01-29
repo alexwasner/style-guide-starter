@@ -1,0 +1,29 @@
+{
+  "name": "style-guide-starter",
+  "version": "0.1.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.8.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.2.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-less": "^3.0.3",
+    "gulp-livereload": "^3.8.0",
+    "gulp-open": "~0.3.2",
+    "gulp-plumber": "^1.0.0",
+    "gulp-shell": "^0.5.2",
+    "gulp-uglify": "^1.4.2",
+    "gulp-util": "^3.0.6",
+    "gulp-watch-less": "^1.0.1",
+    "kss": "^2.4.0",
+    "less-plugin-autoprefix": "^1.5.1",
+    "less-plugin-clean-css": "^1.5.1",
+    "npm": "^3.3.10"
+  },
+  "scripts": {
+    "watch": "gulp watch"
+  },
+  "author": "",
+  "license": "ISC"
+}

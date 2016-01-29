@@ -1,0 +1,31 @@
+/*
+Buttons
+
+Markup: <div class="{{modifier_class}}">Button</div>
+
+.button - A standard button
+ 
+Styleguide 2
+*/
+
+.button {
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  height: 36px;
+  line-height: 36px;
+  text-transform: uppercase;
+  border-radius: 18px;
+  letter-spacing: 5px;
+  text-indent: 5px;
+  padding: 0 32px;
+  text-align: center;
+  transition:opacity 0.2s linear;
+  &:focus {
+    outline: 0;
+  }
+  &.disabled, &.touch, &:hover, &[data-disabled] {
+    opacity: 0.5;
+  }
+}
