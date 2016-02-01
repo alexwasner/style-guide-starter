@@ -55,8 +55,9 @@ gulp.task('ksstemplates', function () {
 //Copies resources to various folders
   .task('copy', function(){
     gulp
-      .src('assets')
-      .pipe(gulp.dest('build'))
+      .src('assets/*')
+      .pipe(gulp.dest('styleguide/assets'))
+      .pipe(gulp.dest('build/assets'))
       .pipe(livereload());
   })
 
@@ -65,7 +66,7 @@ gulp.task('ksstemplates', function () {
   livereload.reload();
 })
 
-.task('default', ['kss', 'less','connect'])
+.task('default', ['kss', 'less','connect','copy'])
 
 .task('watch', ['default'], function(){
   livereload.listen();
