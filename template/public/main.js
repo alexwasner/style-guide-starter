@@ -3,17 +3,17 @@
 
         var $window = $(window),
             $document = $(document),
-            $content = $('.kss-content'),
+            $kssWrapper = $('.kss-wrapper'),
             $sidebar = $('.kss-sidebar'),
             $sidebarInner = $('.kss-sidebar-inner'),
             $menu = $('.kss-menu'),
             $childMenu = $('.kss-menu-child'),
             $menuItem = $menu.find('.kss-menu-item'),
             $childMenuItem = $childMenu.find('.kss-menu-item'),
+            $navButton = $kssWrapper.find('.kss-nav-button'),
             ref = $menu.data('kss-ref'),
             prevScrollTop;
 
-        // Dynamic menu activation
         function scrollSpy() {
             var scrollTop = $window.scrollTop(),
                 $anchors = $childMenu.find('a'),
@@ -33,25 +33,6 @@
             }
         }
 
-        // Fix sidebar position
-        function fixSidebar() {
-            if ($sidebarInner.outerHeight() < $content.outerHeight()) {
-                $sidebar.addClass('kss-fixed');
-                if ($sidebarInner.outerHeight() > $window.height()) {
-                    $sidebar.height($window.height());
-                    $window.on('scroll', scrollSidebar).trigger('scroll');
-                }
-                else {
-                    $sidebar.height('auto');
-                    $window.off('scroll', scrollSidebar);
-                }
-            }
-            else {
-                $sidebar.removeClass('kss-fixed');
-                $sidebar.height('auto');
-                $window.off('scroll', scrollSidebar);
-            }
-        }
 
         // Synchronize sidebar scroll
         function scrollSidebar(event) {
@@ -78,16 +59,14 @@
             $window.on('scroll', scrollSpy).trigger('scroll');
         }
 
-        // Fixed sidebar
-        if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-            $window.on('resize', fixSidebar).trigger('resize');
-        }
-
         // Syntax hightlignting with Rainbow.js
         $('code.html').attr('data-language', 'html');
         $('code.css').attr('data-language', 'css');
         $('code.less, code.scss').attr('data-language', 'generic');
-
+        
+        $navButton.on('click',function(){
+            $kssWrapper.toggleClass('kss-hide-nav');
+        });
         // adding animation class for input event
         var onFocusFunc = function(e){
             var className = e.currentTarget.parentNode.className + ' selected';

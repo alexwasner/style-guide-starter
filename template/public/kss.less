@@ -1,6 +1,5 @@
 // Documentation styles
 // --------------------
-
 body {
   margin: 0;
 }
@@ -16,8 +15,8 @@ body {
   // Variables
   @text-color: #0079c2;
   @key-color: #0079c2;
-  @border-color: #00aedb;
-  @wrapper-width: 960px;
+  @light-text: #888;
+  @light-key-color: #00aedb;
   @sidebar-width: 220px;
   @code-font: Consolas, Menlo,'Liberation Mono', Courier, monospace;
 
@@ -44,7 +43,7 @@ body {
     }
     h1 {
       margin: 60px 0 20px;
-      border-bottom: 2px solid @border-color;
+      border-bottom: 2px solid @light-key-color;
       font-size: 36px;
     }
     h2 {
@@ -82,13 +81,13 @@ body {
     blockquote {
       margin-left: 2px;
       padding: 0 0 0 16px;
-      border-left: 2px solid @border-color;
+      border-left: 2px solid @light-key-color;
     }
     pre {
       .pre-styles();
       overflow: auto;
       padding: 8px 12px;
-      border: 1px solid @border-color;
+      border: 1px solid @light-key-color;
     }
     a,
     img,
@@ -122,7 +121,7 @@ body {
     code {
       .code-styles();
       padding: 1px 2px;
-      border: 1px solid @border-color;
+      border: 1px solid @light-key-color;
       vertical-align: 1px;
     }
     pre > code {
@@ -160,9 +159,36 @@ body {
   // Layout
   .kss-wrapper {
     .clearfix();
-    width: @wrapper-width - 20px;
     margin: 0 auto;
     padding: 0 10px;
+    &.kss-hide-nav{
+      .kss-sidebar{
+        overflow: hidden;
+        transform:translateX(-100%);
+      }
+      .kss-content{
+        margin-left: 0;
+      }
+      .kss-nav-button{
+        span{
+          transform: rotate(0deg);
+          width:100%;
+          left:0;
+        }
+
+        span:nth-child(1) {
+          top: 25%;
+        }
+
+        span:nth-child(2),span:nth-child(3) {
+          top: 50%;
+        }
+
+        span:nth-child(4) {
+          top: 75%;
+        }
+      }
+    }
   }
 
   // Sidebar
@@ -170,19 +196,20 @@ body {
 
   // Sidebar column
   .kss-sidebar {
-    float: left;
+    position:absolute;
     width: @sidebar-width;
+    left:0;
+    bottom:0;
+    top:4px;
     overflow: hidden;
-    &.kss-fixed {
-      position: fixed;
-      top: 0;
-      .kss-sidebar-inner {
-        padding-top: 40px + 4px;  // Keep border height
-      }
-    }
+    overflow-y: scroll;
+    overflow-scrolling: touch;
+    transition:all .25s ease-in-out;
   }
   .kss-sidebar-inner {
-    padding: 40px 0 10px;
+    -webkit-transform: rotateY(0);
+    background:white;
+    padding: 40px 20px 10px;
   }
   // Header
   .kss-header {
@@ -192,7 +219,6 @@ body {
   .kss-doc-title {
     .base-styles();
     margin: 0 0 30px;
-    text-align: right;
     font-size: 20px;
     font-weight: normal;
     color: @key-color;
@@ -219,10 +245,10 @@ body {
         .clearfix();
         display: block;
         padding: 7px 0 7px 5px;
-        border-bottom: 1px solid @border-color;
+        // border-bottom: 1px solid @light-key-color;
         text-decoration: none;
         font-weight: bold;
-        color: #888;
+        color: @light-text;
         &:hover {
           color: @key-color;
         }
@@ -233,7 +259,6 @@ body {
         }
         > .kss-name {
           .ellipsis();
-          text-align: right;
         }
       }
       &.kss-active > a {
@@ -243,38 +268,6 @@ body {
     }
   }
 
-  .kss-menu-child {
-    display: none;
-    margin: 0;
-    padding: 5px 0;
-    list-style-type: none;
-    border-bottom: 1px solid @border-color;
-    > .kss-menu-item {
-      .base-styles();
-      font-size: 12px;
-      > a {
-        display: block;
-        padding: 5px 0 6px 5px;
-        text-decoration: none;
-        color: #0079c2;
-        &:hover {
-          color: @key-color;
-        }
-        > .kss-ref {
-          float: left;
-          margin-right: 10px;
-          color: @key-color;
-        }
-        > .kss-name {
-          .ellipsis();
-          text-align: right;
-        }
-      }
-      &.kss-active > a {
-        color: @text-color;
-      }
-    }
-  }
 
   // Documentation content
   // ---------------------
@@ -282,6 +275,7 @@ body {
   // Content column
   .kss-content {
     overflow: hidden;
+    transition:all .25s ease-in-out;
     margin-left: @sidebar-width + 30px;
     padding: 40px 0 10px;
   }
@@ -304,7 +298,11 @@ body {
     font-weight: bold;
     .kss-ref {
       margin-right: .2em;
-      color: @key-color;
+      color: @light-key-color;
+      font-weight: 300;
+      float: left;
+      font-size:14px;
+      margin-top: 10px;
     }
   }
 
@@ -321,8 +319,11 @@ body {
 
   // Modifiers
   .kss-modifier {
-    border-top: 1px solid @border-color;
+    border-top: 1px solid @light-key-color;
     padding-bottom: 25px;
+    &:first-of-type{
+      border:0px;
+    }
   }
 
   .kss-modifier-head {
@@ -347,13 +348,15 @@ body {
     }
     .kss-modifier-description {
       overflow: hidden;
-      color: #888;
+      color: @light-text;
     }
   }
 
   .kss-modifier-example {
     .clearfix();
     padding: 25px 20px 35px;
+    background:#f5f5f5;
+    margin-bottom: 10px;
   }
   .kss-modifier-original {
     .kss-modifier-example {
@@ -368,10 +371,10 @@ body {
       overflow: auto;
       margin: 0;
       padding: 12px 15px;
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @light-key-color;
       border-left: 2px solid @key-color;
-      border-right: 1px solid @border-color;
-      border-bottom: 1px solid @border-color;
+      border-right: 1px solid @light-key-color;
+      border-bottom: 1px solid @light-key-color;
     }
     code {
       .code-styles();
@@ -405,20 +408,46 @@ body {
     .doc-styles();
     margin: 80px 0 20px;
     padding: 8px 0 0;
-    border-top: 2px solid @border-color;
+    border-top: 2px solid @light-key-color;
     font-size: 12px;
   }
-
-}
-
-// Responsive styles
-// -----------------
-
-// Large desctop
-@media (min-width: 1260px) {
-  #kss-node {
-    .kss-wrapper {
-      width: 1260px - 20px;
+  .kss-nav-button{  
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 30px;
+    width: 30px;
+    padding:15px;
+    z-index: 1000;
+    background: transparent;
+    span{
+      display: block;
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      background: @key-color;
+      border-radius: 2px;
+      opacity: 1;
+      left: 0;
+      margin-top:-1px;
+      transform: rotate(0deg);
+      transition: .25s ease-in-out;
+    }
+    span:nth-child(1) {
+      top: 18px;
+      width: 0%;
+      left: 50%;
+    }
+    span:nth-child(2) {
+      transform: rotate(45deg);
+    }
+    span:nth-child(3) {
+      transform: rotate(-45deg);
+    }
+    span:nth-child(4) {
+      top: 18px;
+      width: 0%;
+      left: 50%;
     }
   }
 }

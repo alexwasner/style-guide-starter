@@ -9,10 +9,11 @@ var gulp = require('gulp'),
     autoprefix= new LessPluginAutoPrefix({ browsers: ["last 2 versions"] }),
     gulpconcat = require('gulp-concat'),
     gulp  = require('gulp'),
-    shell = require('gulp-shell');
+    shell = require('gulp-shell'),
+    merge = require('merge-stream');
 
-gulp.task('kss', function () {
-  return gulp.src('*.js', {read: false})
+gulp.task('ksstemplates', function () {
+  gulp.src('*.js', {read: false})
     .pipe(shell([
       './node_modules/.bin/kss-node <%= theme %> <%= output %> --css <%= css %> --template <%= template %>',
     ], {
@@ -23,7 +24,13 @@ gulp.task('kss', function () {
         template:'./template/'
       }
     }));
-}) 
+}).task('kss', ['ksstemplates'], function () {
+  gulp.src('./template/public/kss.less')
+    .pipe(less({
+      plugins: [autoprefix, cleancss]
+    }))
+    .pipe(gulp.dest('./styleguide'));
+})
 
 //Compile LESS
 .task('less', function() {
@@ -32,7 +39,6 @@ gulp.task('kss', function () {
       plugins: [autoprefix, cleancss]
     }))
     .pipe(gulp.dest('./build'))
-    .pipe(gulp.dest('./'))
     .pipe(gulp.dest('./styleguide'));
 })
 
@@ -50,24 +56,18 @@ gulp.task('kss', function () {
   .task('copy', function(){
     gulp
       .src('assets')
-      .pipe(gulp.dest('build'));
+      .pipe(gulp.dest('build'))
+      .pipe(livereload());
   })
 
-//Open Chrome at start
-.task('open', function(){
-  gulp
-    .src('styleguide/index.html')
-    .pipe(
-      open('', {app: 'google chrome',url: 'http://localhost:8081/'})
-    );
-})
-
 //Reload and run less/kss when something changes
-.task('onchange', ['kss','less', 'copy'], function(){
+.task('onchange', ['kss', 'less', 'copy'], function(){
   livereload.reload();
 })
 
-.task('watch', ['less','connect','open'], function(){
+.task('default', ['kss', 'less','connect'])
+
+.task('watch', ['default'], function(){
   livereload.listen();
   gulp.watch(['main.less','theme/*.*','template/*.*','template/**/*.*'], ['onchange']);
 });

@@ -19,6 +19,7 @@
     "kss": "^2.4.0",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",
+    "merge-stream": "^1.0.0",
     "npm": "^3.3.10"
   },
   "scripts": {
